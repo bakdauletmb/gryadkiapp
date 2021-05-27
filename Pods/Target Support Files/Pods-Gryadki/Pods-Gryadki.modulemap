@@ -1,0 +1,6 @@
+framework module Pods_Gryadki {
+  umbrella header "Pods-Gryadki-umbrella.h"
+
+  export *
+  module * { export * }
+}
