@@ -1,8 +1,142 @@
-//
-//  CodeConfirmationView.swift
-//  Gryadki
-//
-//  Created by Bakdaulet Myrzakerov on 07.04.2021.
-//
 
-import Foundation
+import UIKit
+
+class ConfirmationCodeView: UIView {
+    lazy var firstInputView : UITextField = {
+        var text = UITextField()
+            text.textColor = .mainGreenColor
+            text.layer.borderColor = UIColor.mainGreenColor.cgColor
+            text.layer.borderWidth = 2
+            text.backgroundColor = .white
+            text.layer.cornerRadius = 8
+            text.keyboardType = .numberPad
+            text.textAlignment = .center
+            text.font = .systemFont(ofSize: 34, weight: .medium)
+            text.addTarget(self, action: #selector(self.textFieldDidChange(textField:)), for: .editingChanged)
+            text.layer.borderWidth = 2
+        return text
+    }()
+    var onFourthInputViewChange : (()->())?
+    
+    lazy var secondInputView : UITextField = {
+        var text = UITextField()
+            text.layer.borderWidth = 2
+            text.textColor = .mainGreenColor
+            text.layer.borderColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1)
+            text.backgroundColor = .white
+            text.layer.cornerRadius = 8
+            text.keyboardType = .numberPad
+            text.textAlignment = .center
+            text.font = .systemFont(ofSize: 34, weight: .medium)
+            text.addTarget(self, action: #selector(self.textFieldDidChange(textField:)), for: .editingChanged)
+        
+        return text
+    }()
+    lazy var thirdInputView : UITextField = {
+        var text = UITextField()
+            text.layer.borderWidth = 2
+            text.textColor = .mainGreenColor
+            text.layer.borderColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1)
+            text.backgroundColor = .white
+            text.layer.cornerRadius = 8
+            text.keyboardType = .numberPad
+            text.textAlignment = .center
+            text.font = .systemFont(ofSize: 34, weight: .medium)
+            text.addTarget(self, action: #selector(self.textFieldDidChange(textField:)), for: .editingChanged)
+        
+        return text
+    }()
+    lazy var fourthInputView : UITextField = {
+        var text = UITextField()
+            text.layer.borderWidth = 2
+            text.layer.borderWidth = 2
+            text.textColor = .mainGreenColor
+            text.layer.borderColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1)
+            text.backgroundColor = .white
+            text.layer.cornerRadius = 8
+            text.keyboardType = .numberPad
+            text.textAlignment = .center
+            text.font = .systemFont(ofSize: 34, weight: .medium)
+            text.addTarget(self, action: #selector(self.textFieldDidChange(textField:)), for: .editingChanged)
+            text.delegate = self
+        
+        return text
+    }()
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
+        backgroundColor = .clear
+        setupViews()
+        
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    func setupViews(){
+        addSubview(firstInputView)
+            firstInputView.snp.makeConstraints { (make) in
+                make.top.left.equalToSuperview()
+                make.width.height.equalTo(77)
+            }
+        addSubview(secondInputView)
+            secondInputView.snp.makeConstraints { (make) in
+                make.top.width.height.equalTo(firstInputView)
+                make.left.equalTo(firstInputView.snp.right).offset(12)
+            }
+        addSubview(thirdInputView)
+            thirdInputView.snp.makeConstraints { (make) in
+                make.top.width.height.equalTo(firstInputView)
+                make.left.equalTo(secondInputView.snp.right).offset(12)
+            }
+        addSubview(fourthInputView)
+            fourthInputView.snp.makeConstraints { (make) in
+                make.top.width.height.equalTo(firstInputView)
+                make.left.equalTo(thirdInputView.snp.right).offset(12)
+            }
+    }
+    @objc func textFieldDidChange(textField: UITextField) {
+        let text = textField.text
+        firstInputView.layer.borderColor = UIColor.white.cgColor
+        secondInputView.layer.borderColor = UIColor.white.cgColor
+        thirdInputView.layer.borderColor = UIColor.white.cgColor
+        fourthInputView.layer.borderColor = UIColor.white.cgColor
+        if text?.count == 1 {
+            switch textField {
+            case firstInputView:
+                secondInputView.becomeFirstResponder()
+                secondInputView.layer.borderColor = UIColor.mainGreenColor.cgColor
+            case secondInputView:
+                thirdInputView.becomeFirstResponder()
+                thirdInputView.layer.borderColor = UIColor.mainGreenColor.cgColor
+            case thirdInputView:
+                fourthInputView.becomeFirstResponder()
+                fourthInputView.layer.borderColor = UIColor.mainGreenColor.cgColor
+            case fourthInputView:
+                fourthInputView.resignFirstResponder()
+            default:
+                break
+            }
+        }
+        if text?.count == 0 {
+            switch textField {
+            case secondInputView:
+                firstInputView.becomeFirstResponder()
+            case thirdInputView:
+                secondInputView.becomeFirstResponder()
+            case fourthInputView:
+                thirdInputView.becomeFirstResponder()
+            default:
+                break
+            }
+        }
+    }
+    
+}
+
+
+extension ConfirmationCodeView : UITextFieldDelegate {
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        onFourthInputViewChange?()
+    }
+    
+}

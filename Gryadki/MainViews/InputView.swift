@@ -1,10 +1,3 @@
-//
-//  InputView.swift
-//  Gryadki
-//
-//  Created by Bakdaulet Myrzakerov on 07.04.2021.
-//
-
 import UIKit
 enum InputTypes {
     case phone
@@ -58,7 +51,7 @@ class InputView: UIView {
         let tf = PhoneTextField()
             tf.tag = 1
             tf.borderStyle = .none
-            tf.font = .systemFont(ofSize: 13, weight: .medium)
+            tf.font = .systemFont(ofSize: 24, weight: .medium)
             tf.textColor = #colorLiteral(red: 0.3058823529, green: 0.2980392157, blue: 0.2980392157, alpha: 1)
             tf.backgroundColor = .white
             tf.attributedPlaceholder = NSAttributedString(string: placeholder,
